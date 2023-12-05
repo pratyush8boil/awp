@@ -1,1 +1,41 @@
-maa ki chut
+<html lang="en" ng-app="demoApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTTP GET Demo</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+
+<body ng-controller="demoController">
+
+    <h2>Welcome Message</h2>
+
+    <div ng-show="isLoading">
+        Loading...
+    </div>
+
+    <div ng-show="!isLoading">
+        <p>{{ welcomeMessage }}</p>
+    </div>
+
+    <script>
+        var app = angular.module('demoApp', []);
+
+        app.controller('demoController', function ($scope, $http) {
+            $scope.isLoading = true;
+            $scope.welcomeMessage = '';
+
+            $http.get('demo.html')
+                .then(function (response) {
+                    // Success callback
+                    $scope.isLoading = false;
+                    $scope.welcomeMessage = response.data;
+                })
+                .catch(function (error) {
+                    // Error callback
+                    $scope.isLoading = false;
+                    console.error('Error fetching demo.html:', error);
+                });
+        });
+    </script>
